@@ -1,11 +1,14 @@
 local util = {}
 
+-- Function to check if the Spotify API key is set
 function util.check_api_key()
-  local api_key = os.getenv 'SPOTIFY_API_KEY'
-  if not api_key then
-    error 'SPOTIFY_API_KEY environment variable is not set!'
+  local client_id = os.getenv 'SPOTIFY_BASE64'
+
+  if not client_id then
+    error 'SPOTIFY_CLIENT_ID or SPOTIFY_CLIENT_SECRET environment variable is not set!'
   end
-  return api_key
+
+  return client_id
 end
 
 return util

@@ -2,7 +2,7 @@
 
 local util = require 'spotify.util'
 local Popup = require 'nui.popup'
-
+local spotify_api = require 'spotify.spotify'
 local M = {}
 
 -- Default configurations
@@ -25,8 +25,10 @@ function M.setup(opts)
   -- Merge user options with defaults
   M.config = vim.tbl_deep_extend('force', defaults, opts or {})
 
-  -- Check if API key is set
-  M.config.api_key = util.check_api_key()
+  local client_id = util.check_api_key()
+
+  -- Store API key in the configuration
+  M.config.api_key = client_id
 
   print 'Spotify plugin configured successfully!'
   M.create_floating_window()
@@ -114,6 +116,7 @@ end
 -- Function to handle Spotify events and update the floating window
 function M.handle_spotify_event(event)
   if event.type == 'play' then
+    spotify_api.get_current_song()
     M.update_floating_window(event.song, event.artist)
   elseif event.type == 'pause' then
     -- Handle pause event
